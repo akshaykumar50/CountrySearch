@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Search</title>
+    <link rel="icon" href="./country.png" type="">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        <!-- google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poly:ital@0;1&display=swap" rel="stylesheet">
+        <style>
+            *{
+                font-family: "Playfair Display", serif;
+                overflow-x: hidden;
+            }
+        </style>
+</head>
+<body>
+    <div style="background-image: url('https://wallpapers.com/images/hd/purple-pink-hd-light-liu0dj17rdkmk169.jpg'); width: 100%; height: 100vh; background-repeat: no-repeat; background-size: cover;">
+
+        <h1 class="pt-4 text-center text-light">Know about the Country</h1>
+
+        <div class="row w-100">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mt-4">
+                <div class="d-flex justify-content-center">
+                    <input id="country" type="text" class="form-control w-75" placeholder="Enter the country name">
+                    <button onclick="search()" class="btn btn-outline-light ms-3">Search</button>
+                </div>
+
+                <div id="result" class="mt-5 w-100">
+                    
+                </div>
+                
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        
+
+    </div>
+    
+</body>
+
+<script>
+  search = async() => {
+    let countryName = country.value
+    console.log(countryName);
+
+    if(countryName){
+      const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
+      response.json().then((data)=>{
+        console.log(data[0]);
+
+        //common india
+        let cname = data[0].name.common
+        console.log(cname);
+
+        //official name
+        let official = data[0].name.official
+        console.log(official);
+
+        //capital
+        let capital = data[0].capital
+        console.log(capital);
+
+        //border
+        let border = data[0].borders
+        console.log(border);
+
+        //area
+        let area = data[0].area
+        console.log(area);
+
+        //map
+        let map = data[0].maps.googleMaps
+        console.log(map);
+
+        //population
+        let population = data[0].population
+        console.log(population);
+
+        //timezone
+        let timezones = data[0].timezones
+        console.log(timezones);
+
+        //continents
+        let continents = data[0].continents
+        console.log(continents);
+
+        //flags
+        let flags = data[0].flags.png
+        console.log(flags);
+
+        //languages
+        national_language = []
+        for(let lang in data[0].languages){
+          national_language.push(data[0].languages[lang])
+        }
+        console.log(national_language);
+
+        //currency
+        for(let currency in data[0].currencies){
+          var currencyname = data[0].currencies[currency].name
+          var currencySymbol = data[0].currencies[currency].symbol
+        }
+        console.log(currencyname,currencySymbol);
+
+        result.innerHTML = `
+        <div class="card mb-3" >
+                        <div class="row w-100 p-4">
+                          <div class="col-md-4">
+                            <img src=${flags} class="img-fluid rounded-start" alt="flag">
+                            <div class="card mt-4" style="width: 100%;">
+                                <ul class="list-group list-group-flush">
+                                  <h5 class="fw-bolder mt-4 text-center" style="overflow-y:hidden">${official}</h5>
+                                  <li class="list-group-item">Common name : ${cname}</li>
+                                  <li class="list-group-item">Capital : ${capital}</li>
+                                </ul>
+                                
+                              </div>
+                            
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="card" style="width: 100%;">
+                                    <ul class="list-group list-group-flush">
+                                      <li class="list-group-item">Borders : ${border}</li>
+                                      <li class="list-group-item">Population : ${population}</li>
+                                      <li class="list-group-item">Time Zone : ${timezones}</li>
+                                      <li class="list-group-item">Area : ${area}</li>
+                                      <li class="list-group-item">Continents : ${continents}</li>
+                                      <li class="list-group-item">Languages : ${national_language}</li>
+                                      <li class="list-group-item">Currency : ${currencySymbol,currencyname}</li>
+                                      <li class="list-group-item">Maps : ${map}</li>
+                                      
+                                    </ul>
+                                    
+                                  </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+        `
+
+        
+      })
+    }
+    else{
+      alert('Enter a valid input')
+    }
+  }
+</script>
+
+</html>
